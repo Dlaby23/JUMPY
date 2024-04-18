@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>particle &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">scripts</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">particle</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for particle</h1><div class="highlight"><pre>
+<div class="viewcode-block" id="Particle">
+<a class="viewcode-back" href="../particle.html#particle.Particle">[docs]</a>
+<span></span><span class="k">class</span> <span class="nc">Particle</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents a particle in the game, which can be used for visual effects</span>
+<span class="sd">    like explosions, sparks, etc.</span>
+
+<span class="sd">    Each particle has a type, position, velocity, and is associated with a</span>
+<span class="sd">    specific animation frame. The particle&#39;s</span>
+<span class="sd">    behavior (e.g., movement and animation) is updated each frame, and it can</span>
+<span class="sd">    be rendered to the screen.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        game: The main game object which this particle is part of. This allows</span>
+<span class="sd">          access to game-wide resources and variables.</span>
+<span class="sd">        type (str): A string representing the type of the particle (e.g.,</span>
+<span class="sd">        &#39;leaf&#39;, &#39;sparks&#39;). This can be used to differentiate</span>
+<span class="sd">                    particle behaviors or rendering styles.</span>
+<span class="sd">        pos (list): The position of the particle in the game world as a list</span>
+<span class="sd">        [x, y].</span>
+<span class="sd">        velocity (list): The velocity of the particle as a list [vx, vy],</span>
+<span class="sd">          representing movement along the x and y axes.</span>
+<span class="sd">        animation (Animation): An Animation object representing the particle&#39;s</span>
+<span class="sd">          current animation state. It controls</span>
+<span class="sd">                               which image/frame is displayed for the particle.</span>
+<span class="sd">        frame (int): The initial frame of the animation to start with. Allows</span>
+<span class="sd">        particles of the same type to start</span>
+<span class="sd">                     at different animation states for variety.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game</span><span class="p">,</span> <span class="n">p_type</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">velocity</span><span class="o">=</span><span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="n">frame</span><span class="o">=</span><span class="mi">0</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new Particle instance with the given type, position,</span>
+<span class="sd">        velocity, and animation frame.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            game: The game object this particle is associated with.</span>
+<span class="sd">            p_type (str): The type of the particle.</span>
+<span class="sd">            pos (list): The starting position of the particle in the game</span>
+<span class="sd">              world.</span>
+<span class="sd">            velocity (list, optional): The initial velocity of the particle.</span>
+<span class="sd">              Defaults to [0, 0].</span>
+<span class="sd">            frame (int, optional): The initial frame of the particle&#39;s</span>
+<span class="sd">            animation. Defaults to 0.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game</span> <span class="o">=</span> <span class="n">game</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">p_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">velocity</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span><span class="s2">&quot;particle/&quot;</span> <span class="o">+</span> <span class="n">p_type</span><span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">frame</span> <span class="o">=</span> <span class="n">frame</span>
+
+<div class="viewcode-block" id="Particle.update">
+<a class="viewcode-back" href="../particle.html#particle.Particle.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the particle&#39;s state. This includes moving the particle</span>
+<span class="sd">        according to its velocity and updating its</span>
+<span class="sd">        animation. If the animation is completed, it might mark the particle</span>
+<span class="sd">        for removal.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the particle is to be removed (e.g., because its</span>
+<span class="sd">            animation has finished), False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">kill</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">done</span><span class="p">:</span>
+            <span class="n">kill</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">update</span><span class="p">()</span>
+
+        <span class="k">return</span> <span class="n">kill</span></div>
+
+
+<div class="viewcode-block" id="Particle.render">
+<a class="viewcode-back" href="../particle.html#particle.Particle.render">[docs]</a>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders the particle on the given surface.</span>
+
+<span class="sd">        The particle&#39;s current animation frame is drawn at the particle&#39;s</span>
+<span class="sd">        position. This position is adjusted by</span>
+<span class="sd">        the given offset, which allows for camera movement or scrolling</span>
+<span class="sd">        backgrounds.</span>
+<span class="sd">        Parameters:</span>
+<span class="sd">            surf (pygame.Surface): The Pygame surface to draw the particle on.</span>
+<span class="sd">            offset (tuple, optional): A tuple (x, y) representing the offset</span>
+<span class="sd">            to apply to the particle&#39;s position.</span>
+<span class="sd">                                      This is useful for rendering the particle</span>
+<span class="sd">                                      relative to a moving camera.</span>
+<span class="sd">                                      Defaults to (0, 0).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">img</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">img</span><span class="p">()</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span>
+            <span class="n">img</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">img</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">img</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">//</span> <span class="mi">2</span><span class="p">,</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

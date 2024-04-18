@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clouds module &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="entities module" href="entities.html" />
+    <link rel="prev" title="scripts" href="modules.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">scripts</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">clouds module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#clouds.Cloud"><code class="docutils literal notranslate"><span class="pre">Cloud</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.pos"><code class="docutils literal notranslate"><span class="pre">Cloud.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.img"><code class="docutils literal notranslate"><span class="pre">Cloud.img</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.speed"><code class="docutils literal notranslate"><span class="pre">Cloud.speed</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.depth"><code class="docutils literal notranslate"><span class="pre">Cloud.depth</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.render"><code class="docutils literal notranslate"><span class="pre">Cloud.render()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Cloud.update"><code class="docutils literal notranslate"><span class="pre">Cloud.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#clouds.Clouds"><code class="docutils literal notranslate"><span class="pre">Clouds</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Clouds.render"><code class="docutils literal notranslate"><span class="pre">Clouds.render()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#clouds.Clouds.update"><code class="docutils literal notranslate"><span class="pre">Clouds.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="entities.html">entities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="game.html">game module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particle.html">particle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilemap.html">tilemap module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">scripts</a></li>
+      <li class="breadcrumb-item active">clouds module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/clouds.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-clouds">
+<span id="clouds-module"></span><h1>clouds module<a class="headerlink" href="#module-clouds" title="Link to this heading"></a></h1>
+<p>This module is designed to handle cloud entities within the game environment.</p>
+<p>It provides functionality to create, update, and render clouds, adding to the
+visual aesthetics of the game’s backgrounds or skies.</p>
+<p>Cloud entities are created with varying speeds and depths to simulate realistic
+movement and parallax effects.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="clouds.Cloud">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">clouds.</span></span><span class="sig-name descname"><span class="pre">Cloud</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">img</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">speed</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depth</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Cloud"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Cloud" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Represents an individual cloud in the game with its own position, image,
+speed, and depth.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="clouds.Cloud.pos">
+<span class="sig-name descname"><span class="pre">pos</span></span><a class="headerlink" href="#clouds.Cloud.pos" title="Link to this definition"></a></dt>
+<dd><p>The x and y position of the cloud in the game</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list of float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">world.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="clouds.Cloud.img">
+<span class="sig-name descname"><span class="pre">img</span></span><a class="headerlink" href="#clouds.Cloud.img" title="Link to this definition"></a></dt>
+<dd><p>The image representing the cloud.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>pygame.Surface</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="clouds.Cloud.speed">
+<span class="sig-name descname"><span class="pre">speed</span></span><a class="headerlink" href="#clouds.Cloud.speed" title="Link to this definition"></a></dt>
+<dd><p>The speed at which the cloud moves, simulating wind.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="clouds.Cloud.depth">
+<span class="sig-name descname"><span class="pre">depth</span></span><a class="headerlink" href="#clouds.Cloud.depth" title="Link to this definition"></a></dt>
+<dd><p>The depth of the cloud, used to calculate parallax</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">effects</span> <span class="pre">and</span> <span class="pre">simulate</span> <span class="pre">distance.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clouds.Cloud.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Cloud.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Cloud.render" title="Link to this definition"></a></dt>
+<dd><p>Renders the cloud to a specified surface, adjusting its position based on the provided offset
+and its depth to create a parallax effect.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surf</strong> (<em>pygame.Surface</em>) – The Pygame surface to draw the cloud on.</p></li>
+<li><p><strong>offset</strong> (<em>tuple</em><em> of </em><em>float</em>) – An (x, y) offset to apply to the cloud’s position, used for</p></li>
+<li><p><strong>environments.</strong> (<em>camera movement</em><em> or </em><em>scrolling</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clouds.Cloud.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Cloud.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Cloud.update" title="Link to this definition"></a></dt>
+<dd><p>Updates the cloud’s position based on its speed.</p>
+<p>This method should be called once per frame to move the cloud across
+the game environment.</p>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="clouds.Clouds">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">clouds.</span></span><span class="sig-name descname"><span class="pre">Clouds</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">cloud_pngs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">count</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Clouds"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Clouds" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages a collection of Cloud instances, providing methods to update
+and render all clouds as a group.</p>
+<p>Attributes:
+clouds (list of Cloud): A list of Cloud objects representing
+individual clouds in the game environment.</p>
+<dl class="py method">
+<dt class="sig sig-object py" id="clouds.Clouds.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Clouds.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Clouds.render" title="Link to this definition"></a></dt>
+<dd><p>Renders all cloud instances to a specified surface, applying a
+global offset to each cloud
+and adjusting for parallax effects based on cloud depth.</p>
+<p>Parameters:
+surf (pygame.Surface): The Pygame surface to draw the clouds on.
+offset (tuple of float): A global (x, y) offset to apply to
+all clouds, used for camera movement or scrolling environments.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="clouds.Clouds.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/clouds.html#Clouds.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#clouds.Clouds.update" title="Link to this definition"></a></dt>
+<dd><p>Updates all cloud instances, moving them based on their
+individual speeds.</p>
+<p>This method should be called once per frame to animate the clouds
+across the game environment.</p>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="modules.html" class="btn btn-neutral float-left" title="scripts" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="entities.html" class="btn btn-neutral float-right" title="entities module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

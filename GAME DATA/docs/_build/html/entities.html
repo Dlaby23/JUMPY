@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>entities module &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="game module" href="game.html" />
+    <link rel="prev" title="clouds module" href="clouds.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">scripts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="clouds.html">clouds module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">entities module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#entities.Enemy"><code class="docutils literal notranslate"><span class="pre">Enemy</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Enemy.walking"><code class="docutils literal notranslate"><span class="pre">Enemy.walking</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Enemy.render"><code class="docutils literal notranslate"><span class="pre">Enemy.render()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Enemy.update"><code class="docutils literal notranslate"><span class="pre">Enemy.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#entities.PhysicsEntity"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.game"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.game</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.type"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.type</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.pos"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.pos</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.size"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.velocity"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.velocity</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.collisions"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.collisions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.directions"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.directions</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.action"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.action</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.anim_offset"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.anim_offset</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.flip"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.flip</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.last_movement"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.last_movement</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.rect"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.rect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.render"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.render()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.set_action"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.set_action()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.PhysicsEntity.update"><code class="docutils literal notranslate"><span class="pre">PhysicsEntity.update()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#entities.Player"><code class="docutils literal notranslate"><span class="pre">Player</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.air_time"><code class="docutils literal notranslate"><span class="pre">Player.air_time</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.jumps"><code class="docutils literal notranslate"><span class="pre">Player.jumps</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.wall_slide"><code class="docutils literal notranslate"><span class="pre">Player.wall_slide</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.dashing"><code class="docutils literal notranslate"><span class="pre">Player.dashing</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.dash"><code class="docutils literal notranslate"><span class="pre">Player.dash()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.jump"><code class="docutils literal notranslate"><span class="pre">Player.jump()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.rect"><code class="docutils literal notranslate"><span class="pre">Player.rect()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#entities.Player.update"><code class="docutils literal notranslate"><span class="pre">Player.update()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="game.html">game module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particle.html">particle module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="tilemap.html">tilemap module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">scripts</a></li>
+      <li class="breadcrumb-item active">entities module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/entities.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-entities">
+<span id="entities-module"></span><h1>entities module<a class="headerlink" href="#module-entities" title="Link to this heading"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="entities.Enemy">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">entities.</span></span><span class="sig-name descname"><span class="pre">Enemy</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Enemy"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Enemy" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#entities.PhysicsEntity" title="entities.PhysicsEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysicsEntity</span></code></a></p>
+<p>Represents an enemy entity with specific behaviors like patrolling or
+attacking the player.</p>
+<p>Inherits from PhysicsEntity and adds enemy-specific attributes and methods.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.Enemy.walking">
+<span class="sig-name descname"><span class="pre">walking</span></span><a class="headerlink" href="#entities.Enemy.walking" title="Link to this definition"></a></dt>
+<dd><p>Counter for controlling patrolling behavior or other</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">movement</span> <span class="pre">patterns.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Enemy.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Enemy.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Enemy.render" title="Link to this definition"></a></dt>
+<dd><p>Renders the enemy entity on the specified surface, adjusted by the
+given offset and with additional enemy-specific visuals.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surf</strong> (<em>pygame.Surface</em>) – The surface to draw the enemy on.</p></li>
+<li><p><strong>offset</strong> (<em>tuple</em>) – The offset to apply to the enemy’s position</p></li>
+<li><p><strong>drawing.</strong> (<em>when</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Enemy.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tilemap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Enemy.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Enemy.update" title="Link to this definition"></a></dt>
+<dd><p>Updates the enemy’s state, including patrolling behavior, attacks,
+and interactions with the player.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tilemap</strong> – The tilemap object the enemy interacts with.</p></li>
+<li><p><strong>movement</strong> (<em>tuple</em>) – The movement input for the enemy as (dx, dy).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="entities.PhysicsEntity">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">entities.</span></span><span class="sig-name descname"><span class="pre">PhysicsEntity</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">e_type</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#PhysicsEntity"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.PhysicsEntity" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>A base class for entities in the game that interact physically with the
+world, including players, enemies, and other movable objects.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.game">
+<span class="sig-name descname"><span class="pre">game</span></span><a class="headerlink" href="#entities.PhysicsEntity.game" title="Link to this definition"></a></dt>
+<dd><p>Reference to the main game object for accessing global resources
+and settings.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.type">
+<span class="sig-name descname"><span class="pre">type</span></span><a class="headerlink" href="#entities.PhysicsEntity.type" title="Link to this definition"></a></dt>
+<dd><p>The type of the entity, used to distinguish between</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">different</span> <span class="pre">kinds</span> <span class="pre">of</span> <span class="pre">entities.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.pos">
+<span class="sig-name descname"><span class="pre">pos</span></span><a class="headerlink" href="#entities.PhysicsEntity.pos" title="Link to this definition"></a></dt>
+<dd><p>The position of the entity in the game world as [x, y].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.size">
+<span class="sig-name descname"><span class="pre">size</span></span><a class="headerlink" href="#entities.PhysicsEntity.size" title="Link to this definition"></a></dt>
+<dd><p>The size of the entity as (width, height).</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.velocity">
+<span class="sig-name descname"><span class="pre">velocity</span></span><a class="headerlink" href="#entities.PhysicsEntity.velocity" title="Link to this definition"></a></dt>
+<dd><p>The current velocity of the entity as [vx, vy].</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.collisions">
+<span class="sig-name descname"><span class="pre">collisions</span></span><a class="headerlink" href="#entities.PhysicsEntity.collisions" title="Link to this definition"></a></dt>
+<dd><p>A dictionary tracking collision states in four</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.directions">
+<span class="sig-name descname"><span class="pre">directions</span></span><a class="headerlink" href="#entities.PhysicsEntity.directions" title="Link to this definition"></a></dt>
+<dd><p>‘up’, ‘down’, ‘left’, ‘right’.</p>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.action">
+<span class="sig-name descname"><span class="pre">action</span></span><a class="headerlink" href="#entities.PhysicsEntity.action" title="Link to this definition"></a></dt>
+<dd><p>The current action or state of the entity, affecting</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">its</span> <span class="pre">behavior</span> <span class="pre">and</span> <span class="pre">appearance.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.anim_offset">
+<span class="sig-name descname"><span class="pre">anim_offset</span></span><a class="headerlink" href="#entities.PhysicsEntity.anim_offset" title="Link to this definition"></a></dt>
+<dd><p>Offset for the entity’s animation relative to</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>tuple</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">its</span> <span class="pre">position,</span> <span class="pre">as</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>offset_x, offset_y</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.flip">
+<span class="sig-name descname"><span class="pre">flip</span></span><a class="headerlink" href="#entities.PhysicsEntity.flip" title="Link to this definition"></a></dt>
+<dd><p>Indicates if the entity’s sprite should be flipped</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">horizontally.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.last_movement">
+<span class="sig-name descname"><span class="pre">last_movement</span></span><a class="headerlink" href="#entities.PhysicsEntity.last_movement" title="Link to this definition"></a></dt>
+<dd><p>The last movement input received, as [dx, dy],</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">influencing</span> <span class="pre">the</span> <span class="pre">entity's</span> <span class="pre">direction.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.rect">
+<span class="sig-name descname"><span class="pre">rect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#PhysicsEntity.rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.PhysicsEntity.rect" title="Link to this definition"></a></dt>
+<dd><p>Creates a pygame.Rect object representing the entity’s current
+position and size.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The rectangle representing the entity’s bounds.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pygame.Rect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#PhysicsEntity.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.PhysicsEntity.render" title="Link to this definition"></a></dt>
+<dd><p>Renders the entity on the specified surface, adjusted by the given
+offset and flipped based on the entity’s direction.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surf</strong> (<em>pygame.Surface</em>) – The surface to draw the entity on.</p></li>
+<li><p><strong>offset</strong> (<em>tuple</em>) – The offset to apply to the entity’s position when
+drawing.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.set_action">
+<span class="sig-name descname"><span class="pre">set_action</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">action</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#PhysicsEntity.set_action"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.PhysicsEntity.set_action" title="Link to this definition"></a></dt>
+<dd><p>Sets the current action of the entity, updating its animation
+accordingly.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>action</strong> (<em>str</em>) – The new action to set for the entity.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.PhysicsEntity.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tilemap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#PhysicsEntity.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.PhysicsEntity.update" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Updates the entity’s state, including position, velocity, collisions,</dt><dd><p>and animation based on movement input and tilemap interactions.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tilemap</strong> – The tilemap object the entity interacts with.</p></li>
+<li><p><strong>movement</strong> (<em>tuple</em>) – The movement input for the entity as (dx, dy).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+<dl class="py class">
+<dt class="sig sig-object py" id="entities.Player">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">entities.</span></span><span class="sig-name descname"><span class="pre">Player</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">pos</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">size</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Player"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Player" title="Link to this definition"></a></dt>
+<dd><p>Bases: <a class="reference internal" href="#entities.PhysicsEntity" title="entities.PhysicsEntity"><code class="xref py py-class docutils literal notranslate"><span class="pre">PhysicsEntity</span></code></a></p>
+<p>Represents the player entity with specific behaviors like jumping,
+dashing, and interaction with game elements.</p>
+<p>Inherits from PhysicsEntity and adds player-specific attributes
+and methods.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.Player.air_time">
+<span class="sig-name descname"><span class="pre">air_time</span></span><a class="headerlink" href="#entities.Player.air_time" title="Link to this definition"></a></dt>
+<dd><p>Counter for tracking how long the player has</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">been</span> <span class="pre">in</span> <span class="pre">the</span> <span class="pre">air</span></span></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>for jump control</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.Player.jumps">
+<span class="sig-name descname"><span class="pre">jumps</span></span><a class="headerlink" href="#entities.Player.jumps" title="Link to this definition"></a></dt>
+<dd><p>The number of available jumps (for double jump</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">or</span> <span class="pre">similar</span> <span class="pre">mechanics).</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.Player.wall_slide">
+<span class="sig-name descname"><span class="pre">wall_slide</span></span><a class="headerlink" href="#entities.Player.wall_slide" title="Link to this definition"></a></dt>
+<dd><p>Indicates whether the player is currently
+sliding down a wall.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="entities.Player.dashing">
+<span class="sig-name descname"><span class="pre">dashing</span></span><a class="headerlink" href="#entities.Player.dashing" title="Link to this definition"></a></dt>
+<dd><p>Counter for dash action, controlling its behavior</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">and</span> <span class="pre">duration.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Player.dash">
+<span class="sig-name descname"><span class="pre">dash</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Player.dash"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Player.dash" title="Link to this definition"></a></dt>
+<dd><p>Initiates the player’s dash action, providing a burst of speed and
+potentially passing through obstacles.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Player.jump">
+<span class="sig-name descname"><span class="pre">jump</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Player.jump"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Player.jump" title="Link to this definition"></a></dt>
+<dd><p>Initiates the player’s jump, affecting velocity and potentially
+enabling wall jumps or double jumps.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Player.rect">
+<span class="sig-name descname"><span class="pre">rect</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Player.rect"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Player.rect" title="Link to this definition"></a></dt>
+<dd><p>Overrides the base method to provide a rectangle representing the
+player’s bounds for collision detection.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p>The rectangle representing the player’s bounds.</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>pygame.Rect</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="entities.Player.update">
+<span class="sig-name descname"><span class="pre">update</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">tilemap</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">movement</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/entities.html#Player.update"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#entities.Player.update" title="Link to this definition"></a></dt>
+<dd><dl class="simple">
+<dt>Updates the player’s state, including movement, jump, dash, and</dt><dd><p>interactions with the game world.</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>tilemap</strong> – The tilemap object the player interacts with.</p></li>
+<li><p><strong>movement</strong> (<em>tuple</em>) – The movement input for the player as (dx, dy).</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="clouds.html" class="btn btn-neutral float-left" title="clouds module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="game.html" class="btn btn-neutral float-right" title="game module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

@@ -1,0 +1,6 @@
+{
+    "python.REPL.enableREPLSmartSend": false,
+    "editor.rulers": [
+      79
+    ],
+}

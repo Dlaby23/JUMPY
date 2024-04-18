@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Game Module Documentation - JUMPY</title>
+  <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+  <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+  <script src="_static/jquery.js?v=5d32c60e"></script>
+  <script src="_static/js/theme.js"></script>
+</head>
+<body class="wy-body-for-nav">
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <a href="index.html" class="icon icon-home"> JUMPY </a>
+        <div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+          <ul class="current">
+            <li class="toctree-l1 current"><a class="reference internal" href="#clouds-module">Clouds Module</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="#entities-module">Entities Module</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="#particle-module">Particle Module</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="#tilemap-module">Tilemap Module</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="#utils-module">Utilities Module</a></li>
+            <li class="toctree-l1"><a class="reference internal" href="#game-core-module">Game Core Module</a></li>
+          </ul>
+        </div>
+      </div>
+    </nav>
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap">
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="main" class="document">
+            <div itemprop="articleBody">
+              <section id="clouds-module">
+                <h1>Clouds Module Documentation</h1>
+<section id="introduction-clouds">
+  <h2>Introduction</h2>
+  <p>The <code>clouds.py</code> module is dedicated to managing cloud entities within a game environment. It enhances the visual aesthetics by simulating realistic cloud movement and parallax effects in the game's backgrounds or skies.</p>
+</section>
+<section id="software-parts-clouds">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>The module consists of two primary classes:</p>
+  <ul>
+    <li><code>Cloud</code>: Manages individual cloud entities with attributes such as position, image, speed, and depth.</li>
+    <li><code>Clouds</code>: Handles a collection of <code>Cloud</code> instances, overseeing their creation, updating, and rendering processes.</li>
+  </ul>
+</section>
+<section id="functionality-clouds">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <p><strong>Cloud Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Sets up a cloud with specified attributes like position, image, speed, and depth.</li>
+    <li><strong>Update:</strong> Modifies the cloud's position based on its speed.</li>
+    <li><strong>Render:</strong> Draws the cloud on a specified surface, applying a parallax effect based on its depth.</li>
+  </ul>
+  <p><strong>Clouds Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Instantiates a specified number of clouds with random attributes to create diversity.</li>
+    <li><strong>Update:</strong> Updates all cloud instances by moving them according to their speeds.</li>
+    <li><strong>Render:</strong> Renders all clouds on a specified surface, implementing a global offset and adjusting for parallax effects based on each cloud's depth.</li>
+  </ul>
+</section>
+<section id="architecture-clouds">
+  <h2>Architecture Sketch</h2>
+  <p>This module is visualized as part of the visual rendering layer within a larger game architecture, primarily interacting with the rendering engine (<code>pygame</code>) to display clouds on the game screen.</p>
+</section>
+<section id="error-handling-clouds">
+  <h2>Error Handling</h2>
+  <p>The module does not currently include explicit error handling mechanisms for invalid attribute types or out-of-range values, which could be areas for enhancement in terms of robustness.</p>
+</section>
+<section id="environment-clouds">
+  <h2>Environment</h2>
+  <p>Designed to run within a Python environment, leveraging the <code>pygame</code> library for graphical rendering operations.</p>
+</section>
+<section id="source-location-clouds">
+  <h2>Source Code Location</h2>
+  <p>The source code is stored within the <code>clouds.py</code> file from the provided collection.</p>
+</section>
+<section id="technologies-clouds">
+  <h2>Technologies Used</h2>
+  <p>- Python: The primary programming language.<br>- Pygame: A Python library used for game development, particularly for rendering graphical elements.</p>
+</section>
+
+              </section>
+              <section id="entities-module">
+                <h1>Entities Module Documentation</h1>
+<section id="introduction-entities">
+  <h2>Introduction</h2>
+  <p>The <code>entities.py</code> module is designed to define and manage entities with physics-based interactions in a game environment. This includes handling entities' movements, animations, and various state-based actions such as jumping and dashing.</p>
+</section>
+<section id="software-parts-entities">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>This module features several key classes:</p>
+  <ul>
+    <li><code>PhysicsEntity</code>: A base class providing foundational properties and methods for physics-based interactions.</li>
+    <li><code>Player</code>: A subclass of <code>PhysicsEntity</code>, specialized for player-specific behaviors like jumping, dashing, and collision handling.</li>
+  </ul>
+</section>
+<section id="functionality-entities">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <p><strong>PhysicsEntity Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Initializes an entity with properties like position, size, velocity, and collision states.</li>
+    <li><strong>Movement and Collision Handling:</strong> Manages the entity's movement and detects collisions within the game environment.</li>
+  </ul>
+  <p><strong>Player Class:</strong></p>
+  <ul>
+    <li>Inherits all functionalities of <code>PhysicsEntity</code>.</li>
+    <li><strong>Jump:</strong> Manages the jump mechanics of the player, potentially including mechanics like wall jumps or double jumps.</li>
+    <li><strong>Dash:</strong> Provides a burst of speed for quick maneuvers, enhancing the player's ability to navigate through obstacles.</li>
+  </ul>
+</section>
+<section id="architecture-entities">
+  <h2>Architecture Sketch</h2>
+  <p>The <code>entities.py</code> module interacts heavily with the game's physics and rendering systems to manage entity behaviors effectively. It acts as an intermediary layer that translates game mechanics into visual and interactive elements for the player.</p>
+</section>
+<section id="error-handling-entities">
+  <h2>Error Handling</h2>
+  <p>Error handling within this module would typically involve ensuring that entity states are managed properly to avoid bugs in game mechanics, such as infinite jumps or collision detection issues. However, specific error handling implementations are not detailed in the module.</p>
+</section>
+<section id="environment-entities">
+  <h2>Environment</h2>
+  <p>The module is implemented for use within a Python game development environment, utilizing <code>pygame</code> for handling graphics and animations.</p>
+</section>
+<section id="source-location-entities">
+  <h2>Source Code Location</h2>
+  <p>The source code is located within the <code>entities.py</code> file among the uploaded files.</p>
+</section>
+<section id="technologies-entities">
+  <h2>Technologies Used</h2>
+  <p>- Python: The core programming language used for implementing the module.<br>- Pygame: Utilized for all graphical and interactive elements within the game, such as rendering entities and managing animations.</p>
+</section>
+
+              </section>
+              <section id="particle-module">
+                <h1>Particle Module Documentation</h1>
+<section id="introduction-particle">
+  <h2>Introduction</h2>
+  <p>The <code>particle.py</code> module manages particles within the game, which are used for visual effects like explosions, sparks, and other transient graphical elements. These particles help to enhance the visual impact of various game actions.</p>
+</section>
+<section id="software-parts-particle">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>This module includes a single class, <code>Particle</code>, which encapsulates the properties and behaviors necessary to manage individual particles within the game:</p>
+  <ul>
+    <li>Attributes such as type, position, velocity, and animation state.</li>
+    <li>Methods to update the particle's behavior each frame and render it to the screen.</li>
+  </ul>
+</section>
+<section id="functionality-particle">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <p><strong>Particle Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Sets up a particle with specified attributes including type, position, velocity, and animation frame.</li>
+    <li><strong>Update:</strong> Manages the particle's movement and animation state each frame. It also determines whether the particle should be removed after completing its animation.</li>
+    <li><strong>Render:</strong> Draws the particle on a provided surface, adjusting for camera movements or other dynamic environmental factors.</li>
+  </ul>
+</section>
+<section id="architecture-particle">
+  <h2>Architecture Sketch</h2>
+  <p>This module functions as part of the visual effects system in a larger game architecture. It directly interacts with the game's rendering system (<code>pygame</code>) to display particles and manages its lifecycle based on game events.</p>
+</section>
+<section id="error-handling-particle">
+  <h2>Error Handling</h2>
+  <p>There is no explicit error handling for incorrect types or uninitialized properties within this module, which could be improved to enhance game stability and fault tolerance.</p>
+</section>
+<section id="environment-particle">
+  <h2>Environment</h2>
+  <p>Designed for use within a Python environment that uses the <code>pygame</code> library, particularly for handling graphical rendering.</p>
+</section>
+<section id="source-location-particle">
+  <h2>Source Code Location</h2>
+  <p>The source code is contained within the <code>particle.py</code> file among the provided files.</p>
+</section>
+<section id="technologies-particle">
+  <h2>Technologies Used</h2>
+  <p>- Python: The programming language of choice for the implementation.<br>- Pygame: Used for all rendering processes related to displaying particles and managing their animations.</p>
+</section>
+
+              </section>
+              <section id="tilemap-module">
+                <h1>Tilemap Module Documentation</h1>
+<section id="introduction-tilemap">
+  <h2>Introduction</h2>
+  <p>The <code>tilemap.py</code> module manages the creation, manipulation, and rendering of tilemaps in the game. It supports functionalities such as loading and saving tilemaps, accessing and modifying tiles, and rendering the tilemap on the screen. It also includes utilities for tile-based collision detection and automatically selecting tile variants based on neighboring tiles to create visually cohesive maps.</p>
+</section>
+<section id="software-parts-tilemap">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>This module includes a single main class, <code>Tilemap</code>, which handles all operations related to tile management within a game world:</p>
+  <ul>
+    <li>Managing a grid of tiles.</li>
+    <li>Handling dynamic tile placement and retrieval.</li>
+    <li>Rendering tiles based on game camera positions.</li>
+  </ul>
+</section>
+<section id="functionality-tilemap">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <p><strong>Tilemap Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Sets up a new tilemap instance with a specified tile size and initializes an empty tilemap grid.</li>
+    <li><strong>Tile Extraction:</strong> Allows for selective extraction of tiles based on type and variant, with options to keep or remove them from the map.</li>
+    <li><strong>Collision Detection:</strong> Provides a method to get collision rectangles based on tile properties and game rules.</li>
+    <li><strong>Rendering:</strong> Handles drawing the tilemap onto a given surface, adjusting tile positions based on camera movements.</li>
+  </ul>
+</section>
+<section id="architecture-tilemap">
+  <h2>Architecture Sketch</h2>
+  <p>This module is a crucial part of the game's environment system, interfacing directly with the game's rendering engine to display the game world. It works closely with other parts of the game that handle entity interactions and game physics to ensure cohesive gameplay.</p>
+</section>
+<section id="error-handling-tilemap">
+  <h2>Error Handling</h2>
+  <p>Error handling might include managing out-of-bounds access when interacting with the tile grid or handling missing assets for certain tiles. These aspects are not explicitly covered in the code provided but are important for robust game development.</p>
+</section>
+<section id="environment-tilemap">
+  <h2>Environment</h2>
+  <p>Implemented for use within a Python environment, using the <code>pygame</code> library for graphical operations related to tile manipulation and rendering.</p>
+</section>
+<section id="source-location-tilemap">
+  <h2>Source Code Location</h2>
+  <p>The source code is contained within the <code>tilemap.py</code> file from the uploaded collection.</p>
+</section>
+<section id="technologies-tilemap">
+  <h2>Technologies Used</h2>
+  <p>- Python: Used for all backend logic related to tile management and game interactions.<br>- Pygame: Employed for rendering the tilemap and managing graphical assets.</p>
+</section>
+
+              </section>
+              <section id="utils-module">
+                <h1>Utilities Module Documentation</h1>
+<section id="introduction-utils">
+  <h2>Introduction</h2>
+  <p>The <code>utils.py</code> module provides utility functions and classes for loading and managing game assets, such as images and animations. It is designed to facilitate the handling of graphical assets by allowing easy loading and animation of image sequences, which is crucial for maintaining an engaging visual experience in the game.</p>
+</section>
+<section id="software-parts-utils">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>This module includes functions and a class focused on asset management:</p>
+  <ul>
+    <li><code>load_image</code>: Loads a single image with transparency settings.</li>
+    <li><code>load_pngs</code>: Loads all PNG images from a specified directory, facilitating batch asset loading.</li>
+    <li><code>Animation</code>: A class that manages sequences of images to create animations, handling looping and frame advancement.</li>
+  </ul>
+</section>
+<section id="functionality-utils">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <ul>
+    <li><strong>load_image:</strong> Loads an image from a given path and sets a color key for transparency, returning a <code>pygame.Surface</code>.</li>
+    <li><strong>load_pngs:</strong> Loads all PNG files from a specified directory path and returns them as a list of <code>pygame.Surface</code> objects, sorted by file name.</li>
+    <li><strong>Animation Class:</strong>
+      <ul>
+        <li><strong>Initialization:</strong> Sets up an animation with a sequence of frames, a loop setting, and an image duration per frame.</li>
+        <li><strong>Update:</strong> Advances the animation frame-by-frame and handles the looping logic.</li>
+        <li><strong>Image Retrieval:</strong> Provides the current frame's image for rendering purposes.</li>
+      </ul>
+    </li>
+  </ul>
+</section>
+<section id="architecture-utils">
+  <h2>Architecture Sketch</h2>
+  <p>The <code>utils.py</code> module serves as an asset management layer in the game architecture, interfacing directly with the game's rendering system to supply necessary graphical assets for other components of the game such as entities and environments.</p>
+</section>
+<section id="error-handling-utils">
+  <h2>Error Handling</h2>
+  <p>While the module includes basic error handling for file operations (like loading images from non-existent paths), more comprehensive error management could be implemented to handle issues such as corrupted image files or missing directories.</p>
+</section>
+<section id="environment-utils">
+  <h2>Environment</h2>
+  <p>Designed for use within a Python environment, specifically with the <code>pygame</code> library for managing and rendering graphical assets.</p>
+</section>
+<section id="source-location-utils">
+  <h2>Source Code Location</h2>
+  <p>The source code is stored within the <code>utils.py</code> file from the provided collection.</p>
+</section>
+<section id="technologies-utils">
+  <h2>Technologies Used</h2>
+  <p>- Python: The primary programming language used for implementing the module.<br>- Pygame: Utilized for all operations related to loading, handling, and animating images within the game.</p>
+</section>
+
+              </section>
+              <section id="game-core-module">
+                <h1>Game Core Module Documentation</h1>
+<section id="introduction-game-core">
+  <h2>Introduction</h2>
+  <p>The <code>game.py</code> file contains the core game class and the main entry point of the game. It initializes and manages the game environment, assets, and handles the main game loop. This includes rendering updates, event handling, and transitioning between different game states such as menus and gameplay sessions.</p>
+</section>
+<section id="software-parts-game-core">
+  <h2>Main Software Parts / Modules and Their Connections</h2>
+  <p>This module includes classes and main functions:</p>
+  <ul>
+    <li><code>Game</code>: Manages the main game environment, including initializing the display, loading assets, and controlling game states.</li>
+    <li><code>Menu</code>: Handles the game's menu system, allowing users to start the game, adjust settings, or exit.</li>
+    <li>Entry point script: Manages the high-level flow of the game, looping between menu navigation and the game loop.</li>
+  </ul>
+</section>
+<section id="functionality-game-core">
+  <h2>Description of Main Functionalities, Service Description</h2>
+  <p><strong>Game Class:</strong></p>
+  <ul>
+    <li><strong>Initialization:</strong> Sets up the game by initializing the Pygame display, loading graphical assets, and preparing various game settings like screen dimensions and clock.</li>
+    <li><strong>Asset Management:</strong> Utilizes utility functions to load images and animations for use in the game.</li>
+    <li><strong>Game Loop:</strong> Contains a loop that runs for the duration of the game, handling events, updating game state, rendering the game environment, and managing transitions like game over or level completion.</li>
+  </ul>
+  <p><strong>Menu Class:</strong></p>
+  <ul>
+    <li>Manages the display of the main menu and handles user input to navigate through the menu options.</li>
+  </ul>
+</section>
+<section id="architecture-game-core">
+  <h2>Architecture Sketch</h2>
+  <p>The <code>game.py</code> module serves as the central control system for the game, interfacing with nearly all other parts of the game such as rendering, event handling, and state management. It orchestrates the flow from the start of the game, through the main menu, into the game itself, and back.</p>
+</section>
+<section id="error-handling-game-core">
+  <h2>Error Handling</h2>
+  <p>The module includes basic error handling for events and state transitions, but there might be areas to improve in terms of handling exceptional cases, such as loading failures for assets or unexpected user inputs.</p>
+</section>
+<section id="environment-game-core">
+  <h2>Environment</h2>
+  <p>Designed to run in a Python environment with the Pygame library, this module is central to the game's operation on platforms supporting Python and Pygame.</p>
+</section>
+<section id="source-location-game-core">
+  <h2>Source Code Location</h2>
+  <p>The source code for managing the main aspects of the game is located within the <code>game.py</code> file.</p>
+</section>
+<section id="technologies-game-core">
+  <h2>Technologies Used</h2>
+  <p>- Python: The main programming language used for developing the game logic.<br>- Pygame: Used extensively for graphical rendering, event handling, and audio management.</p>
+</section>
+
+              </section>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+    jQuery(function () {
+        SphinxRtdTheme.Navigation.enable(true);
+    });
+  </script>
+</body>
+</html>

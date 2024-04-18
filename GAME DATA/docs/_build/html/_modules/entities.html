@@ -1,0 +1,743 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>entities &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">scripts</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">entities</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for entities</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span> <span class="nn">math</span>
+<span class="kn">import</span> <span class="nn">random</span>
+<span class="kn">import</span> <span class="nn">pygame</span>
+
+<span class="kn">from</span> <span class="nn">scripts.particle</span> <span class="kn">import</span> <span class="n">Particle</span>
+
+
+<div class="viewcode-block" id="PhysicsEntity">
+<a class="viewcode-back" href="../entities.html#entities.PhysicsEntity">[docs]</a>
+<span class="k">class</span> <span class="nc">PhysicsEntity</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    A base class for entities in the game that interact physically with the</span>
+<span class="sd">    world, including players, enemies, and other movable objects.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        game: Reference to the main game object for accessing global resources</span>
+<span class="sd">          and settings.</span>
+<span class="sd">        type (str): The type of the entity, used to distinguish between</span>
+<span class="sd">        different kinds of entities.</span>
+<span class="sd">        pos (list): The position of the entity in the game world as [x, y].</span>
+<span class="sd">        size (tuple): The size of the entity as (width, height).</span>
+<span class="sd">        velocity (list): The current velocity of the entity as [vx, vy].</span>
+<span class="sd">        collisions (dict): A dictionary tracking collision states in four</span>
+<span class="sd">        directions: &#39;up&#39;, &#39;down&#39;, &#39;left&#39;, &#39;right&#39;.</span>
+<span class="sd">        action (str): The current action or state of the entity, affecting</span>
+<span class="sd">        its behavior and appearance.</span>
+<span class="sd">        anim_offset (tuple): Offset for the entity&#39;s animation relative to</span>
+<span class="sd">        its position, as (offset_x, offset_y).</span>
+<span class="sd">        flip (bool): Indicates if the entity&#39;s sprite should be flipped</span>
+<span class="sd">        horizontally.</span>
+<span class="sd">        last_movement (list): The last movement input received, as [dx, dy],</span>
+<span class="sd">        influencing the entity&#39;s direction.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game</span><span class="p">,</span> <span class="n">e_type</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new PhysicsEntity with given properties and default</span>
+<span class="sd">        values for velocity, collisions, and action state.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            game: The main game object.</span>
+<span class="sd">            e_type (str): The entity type.</span>
+<span class="sd">            pos (list): The initial position of the entity.</span>
+<span class="sd">            size (tuple): The size of the entity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Inicializace fyzikální entity se všemi jejími vlastnostmi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">game</span> <span class="o">=</span> <span class="n">game</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">=</span> <span class="n">e_type</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>  <span class="c1"># Pozice entity ve hře</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">size</span> <span class="o">=</span> <span class="n">size</span>  <span class="c1"># Velikost entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Rychlost pohybu entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;up&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;down&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>  <span class="c1"># Informace o kolizích s okolím</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="s2">&quot;&quot;</span>  <span class="c1"># Aktuální akce entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">anim_offset</span> <span class="o">=</span> <span class="p">(</span><span class="o">-</span><span class="mi">3</span><span class="p">,</span> <span class="o">-</span><span class="mi">3</span><span class="p">)</span>  <span class="c1"># Odsazení animace od pozice entity</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="kc">False</span>  <span class="c1"># Určuje, zda je entity otočená</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>  <span class="c1"># Nastavení výchozí akce na &quot;klid&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_movement</span> <span class="o">=</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">]</span>  <span class="c1"># Poslední směr pohybu entity</span>
+
+<div class="viewcode-block" id="PhysicsEntity.rect">
+<a class="viewcode-back" href="../entities.html#entities.PhysicsEntity.rect">[docs]</a>
+    <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Creates a pygame.Rect object representing the entity&#39;s current</span>
+<span class="sd">        position and size.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pygame.Rect: The rectangle representing the entity&#39;s bounds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">return</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span></div>
+
+
+<div class="viewcode-block" id="PhysicsEntity.set_action">
+<a class="viewcode-back" href="../entities.html#entities.PhysicsEntity.set_action">[docs]</a>
+    <span class="k">def</span> <span class="nf">set_action</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">action</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Sets the current action of the entity, updating its animation</span>
+<span class="sd">        accordingly.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            action (str): The new action to set for the entity.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="n">action</span> <span class="o">!=</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">action</span> <span class="o">=</span> <span class="n">action</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">animation</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">type</span> <span class="o">+</span> <span class="s2">&quot;/&quot;</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">action</span>
+            <span class="p">]</span><span class="o">.</span><span class="n">copy</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PhysicsEntity.update">
+<a class="viewcode-back" href="../entities.html#entities.PhysicsEntity.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="n">movement</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the entity&#39;s state, including position, velocity, collisions,</span>
+<span class="sd">          and animation based on movement input and tilemap interactions.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            tilemap: The tilemap object the entity interacts with.</span>
+<span class="sd">            movement (tuple): The movement input for the entity as (dx, dy).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span> <span class="o">=</span> <span class="p">{</span>
+            <span class="s2">&quot;up&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;down&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;right&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+            <span class="s2">&quot;left&quot;</span><span class="p">:</span> <span class="kc">False</span><span class="p">,</span>
+        <span class="p">}</span>  <span class="c1"># Resetování informací o kolizích</span>
+
+        <span class="n">frame_movement</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+            <span class="n">movement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+        <span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span>
+        <span class="n">entity_rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">tilemap</span><span class="o">.</span><span class="n">physics_rects_around</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entity_rect</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">entity_rect</span><span class="o">.</span><span class="n">right</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">left</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">entity_rect</span><span class="o">.</span><span class="n">left</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">right</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity_rect</span><span class="o">.</span><span class="n">x</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+=</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="n">entity_rect</span> <span class="o">=</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span>
+
+        <span class="k">for</span> <span class="n">rect</span> <span class="ow">in</span> <span class="n">tilemap</span><span class="o">.</span><span class="n">physics_rects_around</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">):</span>
+            <span class="k">if</span> <span class="n">entity_rect</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="n">rect</span><span class="p">):</span>
+                <span class="k">if</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">entity_rect</span><span class="o">.</span><span class="n">bottom</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">top</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;down&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="k">if</span> <span class="n">frame_movement</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                    <span class="n">entity_rect</span><span class="o">.</span><span class="n">top</span> <span class="o">=</span> <span class="n">rect</span><span class="o">.</span><span class="n">bottom</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">]</span> <span class="o">=</span> <span class="kc">True</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="n">entity_rect</span><span class="o">.</span><span class="n">y</span>
+
+        <span class="k">if</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="kc">True</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">last_movement</span> <span class="o">=</span> <span class="n">movement</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">5</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;down&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;up&quot;</span><span class="p">]:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="PhysicsEntity.render">
+<a class="viewcode-back" href="../entities.html#entities.PhysicsEntity.render">[docs]</a>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders the entity on the specified surface, adjusted by the given</span>
+<span class="sd">        offset and flipped based on the entity&#39;s direction.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            surf (pygame.Surface): The surface to draw the entity on.</span>
+<span class="sd">            offset (tuple): The offset to apply to the entity&#39;s position when</span>
+<span class="sd">              drawing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span>
+            <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">animation</span><span class="o">.</span><span class="n">img</span><span class="p">(),</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span><span class="p">,</span> <span class="kc">False</span><span class="p">),</span>
+            <span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim_offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">anim_offset</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Enemy">
+<a class="viewcode-back" href="../entities.html#entities.Enemy">[docs]</a>
+<span class="k">class</span> <span class="nc">Enemy</span><span class="p">(</span><span class="n">PhysicsEntity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an enemy entity with specific behaviors like patrolling or</span>
+<span class="sd">    attacking the player.</span>
+
+<span class="sd">    Inherits from PhysicsEntity and adds enemy-specific attributes and methods.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        walking (int): Counter for controlling patrolling behavior or other</span>
+<span class="sd">        movement patterns.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new Enemy instance with the specified properties.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            game: The main game object.</span>
+<span class="sd">            pos (list): The initial position of the enemy.</span>
+<span class="sd">            size (tuple): The size of the enemy.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="s2">&quot;enemy&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">walking</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Enemy.update">
+<a class="viewcode-back" href="../entities.html#entities.Enemy.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="n">movement</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the enemy&#39;s state, including patrolling behavior, attacks,</span>
+<span class="sd">        and interactions with the player.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            tilemap: The tilemap object the enemy interacts with.</span>
+<span class="sd">            movement (tuple): The movement input for the enemy as (dx, dy).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">walking</span><span class="p">:</span>
+            <span class="k">if</span> <span class="n">tilemap</span><span class="o">.</span><span class="n">solid_check</span><span class="p">(</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centerx</span> <span class="o">+</span> <span class="p">(</span><span class="o">-</span><span class="mi">7</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="k">else</span> <span class="mi">7</span><span class="p">),</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">+</span> <span class="mi">23</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">):</span>
+                <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]:</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span>
+                <span class="k">else</span><span class="p">:</span>
+                    <span class="n">movement</span> <span class="o">=</span> <span class="p">(</span>
+                        <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.5</span> <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="k">else</span> <span class="mf">0.5</span><span class="p">,</span>
+                        <span class="n">movement</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="p">)</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">walking</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">walking</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">walking</span><span class="p">:</span>
+
+                <span class="n">dis</span> <span class="o">=</span> <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span>
+                <span class="p">)</span>
+                <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="n">dis</span><span class="p">[</span><span class="mi">1</span><span class="p">])</span> <span class="o">&lt;</span> <span class="mi">16</span><span class="p">:</span>
+                    <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="ow">and</span> <span class="n">dis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;shoot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">fireball</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="p">[</span>
+                                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centerx</span> <span class="o">-</span> <span class="mi">7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centery</span><span class="p">],</span>
+                                <span class="o">-</span><span class="mi">3</span><span class="p">,</span>
+                                <span class="mi">0</span><span class="p">,</span>
+                            <span class="p">]</span>
+                        <span class="p">)</span>
+
+                    <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="ow">and</span> <span class="n">dis</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;shoot&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">fireball</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                            <span class="p">[</span>
+                                <span class="p">[</span><span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centerx</span> <span class="o">+</span> <span class="mi">7</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centery</span><span class="p">],</span>
+                                <span class="mi">3</span><span class="p">,</span>
+                                <span class="mi">0</span><span class="p">,</span>
+                            <span class="p">]</span>
+                        <span class="p">)</span>
+
+        <span class="k">elif</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">&lt;</span> <span class="mf">0.01</span><span class="p">:</span>
+            <span class="c1"># Náhodné začátky kroků, pokud nepřítel nestojí</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">walking</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">30</span><span class="p">,</span> <span class="mi">120</span><span class="p">)</span>
+
+        <span class="c1"># Aktualizace pohybu entity</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tilemap</span><span class="p">,</span> <span class="n">movement</span><span class="o">=</span><span class="n">movement</span><span class="p">)</span>
+
+        <span class="c1"># Nastavení akce podle směru pohybu</span>
+        <span class="k">if</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+        <span class="k">elif</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+
+        <span class="c1"># Detekce úderu od hráče a reakce</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">20</span><span class="p">:</span>
+
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">player</span><span class="o">.</span><span class="n">rect</span><span class="p">()):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;hit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>
+                    <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">3.14</span> <span class="o">*</span> <span class="mi">2</span>
+                    <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">5</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Particle</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                            <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                            <span class="n">velocity</span><span class="o">=</span><span class="p">[</span>
+                                <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="mf">3.14</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">,</span>
+                                <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span> <span class="o">+</span> <span class="mf">3.14</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span> <span class="o">*</span> <span class="mf">0.2</span><span class="p">,</span>
+                            <span class="p">],</span>
+                            <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Enemy.render">
+<a class="viewcode-back" href="../entities.html#entities.Enemy.render">[docs]</a>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders the enemy entity on the specified surface, adjusted by the</span>
+<span class="sd">        given offset and with additional enemy-specific visuals.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            surf (pygame.Surface): The surface to draw the enemy on.</span>
+<span class="sd">            offset (tuple): The offset to apply to the enemy&#39;s position</span>
+<span class="sd">            when drawing.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Vykreslení nepřátelské entity s přihlédnutím k otočení</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span><span class="p">:</span>
+            <span class="c1"># Vykreslení zbraně v případě otočení entity</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">transform</span><span class="o">.</span><span class="n">flip</span><span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span><span class="s2">&quot;weapon1&quot;</span><span class="p">],</span> <span class="kc">True</span><span class="p">,</span> <span class="kc">False</span>
+                <span class="p">),</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centerx</span>
+                    <span class="o">-</span> <span class="mi">6</span>
+                    <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span><span class="s2">&quot;weapon1&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span>
+                    <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centery</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">assets</span><span class="p">[</span><span class="s2">&quot;weapon1&quot;</span><span class="p">],</span>
+                <span class="p">(</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centerx</span> <span class="o">+</span> <span class="mi">4</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">centery</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="mi">8</span><span class="p">,</span>
+                <span class="p">),</span>
+            <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Player">
+<a class="viewcode-back" href="../entities.html#entities.Player">[docs]</a>
+<span class="k">class</span> <span class="nc">Player</span><span class="p">(</span><span class="n">PhysicsEntity</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents the player entity with specific behaviors like jumping,</span>
+<span class="sd">    dashing, and interaction with game elements.</span>
+
+<span class="sd">    Inherits from PhysicsEntity and adds player-specific attributes</span>
+<span class="sd">    and methods.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        air_time (int): Counter for tracking how long the player has</span>
+<span class="sd">        been in the air (for jump control).</span>
+<span class="sd">        jumps (int): The number of available jumps (for double jump</span>
+<span class="sd">        or similar mechanics).</span>
+<span class="sd">        wall_slide (bool): Indicates whether the player is currently</span>
+<span class="sd">          sliding down a wall.</span>
+<span class="sd">        dashing (int): Counter for dash action, controlling its behavior</span>
+<span class="sd">        and duration.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">game</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new Player instance with the specified properties.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            game: The main game object.</span>
+<span class="sd">            pos (list): The initial position of the player.</span>
+<span class="sd">            size (tuple): The size of the player.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Inicializace hráčovy entity s předkem PhysicsEntity</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="fm">__init__</span><span class="p">(</span><span class="n">game</span><span class="p">,</span> <span class="s2">&quot;player&quot;</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">size</span><span class="p">)</span>
+
+        <span class="c1"># Počet snímků, které hráč stráví ve vzduchu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Počet možných skoků hráče</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">=</span> <span class="mi">0</span>
+
+        <span class="c1"># Indikátor, zda hráč sklouzává po zdi</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">wall_slide</span> <span class="o">=</span> <span class="kc">False</span>
+
+        <span class="c1"># Proměnná pro útok hráče</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">=</span> <span class="mi">0</span>
+
+<div class="viewcode-block" id="Player.update">
+<a class="viewcode-back" href="../entities.html#entities.Player.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">tilemap</span><span class="p">,</span> <span class="n">movement</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the player&#39;s state, including movement, jump, dash, and</span>
+<span class="sd">          interactions with the game world.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            tilemap: The tilemap object the player interacts with.</span>
+<span class="sd">            movement (tuple): The movement input for the player as (dx, dy).</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Aktualizace stavu hráčovy entity v závislosti na pohybu a kolizích</span>
+        <span class="nb">super</span><span class="p">()</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">tilemap</span><span class="p">,</span> <span class="n">movement</span><span class="o">=</span><span class="n">movement</span><span class="p">)</span>
+
+        <span class="c1"># Aktualizace doby strávené ve vzduchu</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">+=</span> <span class="mi">1</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">&gt;</span> <span class="mi">160</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;hit&quot;</span><span class="p">)</span>
+            <span class="c1"># Detekce, zda hráč strávil příliš dlouho ve vzduchu</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;hit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">30</span><span class="p">):</span>  <span class="c1"># Generate 20 particles for effect</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mf">3.14</span><span class="p">)</span>
+                <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+                <span class="n">velocity</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Particle</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                        <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                        <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span><span class="p">,</span>
+                        <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;down&quot;</span><span class="p">]:</span>
+            <span class="c1"># Resetování skoků, pokud hráč dosáhl země</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">=</span> <span class="mi">0</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">=</span> <span class="mi">1</span>
+
+        <span class="bp">self</span><span class="o">.</span><span class="n">wall_slide</span> <span class="o">=</span> <span class="kc">False</span>
+        <span class="k">if</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]</span> <span class="ow">or</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;left&quot;</span><span class="p">]</span>
+        <span class="p">)</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+            <span class="c1"># Kontrola sklouznutí po zdi a nastavení akce</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">wall_slide</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="mf">0.5</span><span class="p">)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">collisions</span><span class="p">[</span><span class="s2">&quot;right&quot;</span><span class="p">]:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="kc">False</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="o">=</span> <span class="kc">True</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;wall_slide&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">wall_slide</span><span class="p">:</span>
+            <span class="c1"># Nastavení akce podle situace (skok, běh, nečinnost)</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">&gt;</span> <span class="mi">4</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;jump&quot;</span><span class="p">)</span>
+
+            <span class="k">elif</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">!=</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;run&quot;</span><span class="p">)</span>
+            <span class="k">elif</span> <span class="n">movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">==</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;idle&quot;</span><span class="p">)</span>
+
+        <span class="c1"># animace utoku hrace pře ruzne faze</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">55</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">55</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">55</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">35</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack2&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">55</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">35</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack2&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">35</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">25</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack3&quot;</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">35</span><span class="p">:</span>
+            <span class="k">if</span> <span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="o">-</span><span class="mi">25</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack3&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="ow">in</span> <span class="p">{</span><span class="mi">70</span><span class="p">,</span> <span class="mi">60</span><span class="p">}:</span>
+            <span class="c1"># Vytvoření efektu střílení (pohybující se částice)</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">2</span>
+                <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span>
+                <span class="n">pvelocity</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Particle</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                        <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                        <span class="n">velocity</span><span class="o">=</span><span class="n">pvelocity</span><span class="p">,</span>
+                        <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">+</span> <span class="mi">1</span><span class="p">)</span>
+        <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">60</span><span class="p">:</span>
+            <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">2</span>
+                <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span>
+                <span class="n">pvelocity</span> <span class="o">=</span> <span class="p">[</span><span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span> <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">]</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                    <span class="n">Particle</span><span class="p">(</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                        <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                        <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                        <span class="n">velocity</span><span class="o">=</span><span class="n">pvelocity</span><span class="p">,</span>
+                        <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                    <span class="p">)</span>
+                <span class="p">)</span>
+            <span class="c1"># Nastavení rychlosti hráče při útoku</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">/</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">*</span> <span class="mi">8</span>
+
+            <span class="k">if</span> <span class="nb">abs</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">)</span> <span class="o">&lt;=</span> <span class="mi">61</span><span class="p">:</span>
+
+                <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">3</span><span class="p">):</span>
+                    <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">*</span> <span class="mi">2</span>
+                    <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">1</span>
+                    <span class="n">pvelocity</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span>
+                        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Particle</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                            <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                            <span class="n">velocity</span><span class="o">=</span><span class="n">pvelocity</span><span class="p">,</span>
+                            <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*=</span> <span class="mf">0.01</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">set_action</span><span class="p">(</span><span class="s2">&quot;attack2&quot;</span><span class="p">)</span>
+
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="k">else</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="nb">min</span><span class="p">(</span><span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+</span> <span class="mf">0.1</span><span class="p">,</span> <span class="mi">0</span><span class="p">)</span>
+
+        <span class="n">lethal_decors</span> <span class="o">=</span> <span class="n">tilemap</span><span class="o">.</span><span class="n">extract</span><span class="p">(</span>
+            <span class="p">[</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">2</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">3</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">4</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">5</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">7</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">21</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">22</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">23</span><span class="p">),</span>
+                <span class="p">(</span><span class="s2">&quot;large_decor&quot;</span><span class="p">,</span> <span class="mi">24</span><span class="p">),</span>
+            <span class="p">],</span>
+            <span class="n">keep</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="k">for</span> <span class="n">decor</span> <span class="ow">in</span> <span class="n">lethal_decors</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">colliderect</span><span class="p">(</span>
+                <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+                    <span class="n">decor</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">][</span><span class="mi">0</span><span class="p">],</span>
+                    <span class="n">decor</span><span class="p">[</span><span class="s2">&quot;pos&quot;</span><span class="p">][</span><span class="mi">1</span><span class="p">],</span>
+                    <span class="n">tilemap</span><span class="o">.</span><span class="n">tile_size</span><span class="p">,</span>
+                    <span class="n">tilemap</span><span class="o">.</span><span class="n">tile_size</span><span class="p">,</span>
+                <span class="p">)</span>
+            <span class="p">):</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;hit&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">dead</span> <span class="o">=</span> <span class="o">+</span><span class="mi">1</span>
+                <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">20</span><span class="p">):</span>  <span class="c1"># Generate 20 particles for effect</span>
+                    <span class="n">angle</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">2</span> <span class="o">*</span> <span class="mi">3</span><span class="p">)</span>
+                    <span class="n">speed</span> <span class="o">=</span> <span class="n">random</span><span class="o">.</span><span class="n">uniform</span><span class="p">(</span><span class="mi">2</span><span class="p">,</span> <span class="mi">5</span><span class="p">)</span>
+                    <span class="n">velocity</span> <span class="o">=</span> <span class="p">[</span>
+                        <span class="n">math</span><span class="o">.</span><span class="n">cos</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span>
+                        <span class="n">math</span><span class="o">.</span><span class="n">sin</span><span class="p">(</span><span class="n">angle</span><span class="p">)</span> <span class="o">*</span> <span class="n">speed</span><span class="p">,</span>
+                    <span class="p">]</span>
+                    <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">particles</span><span class="o">.</span><span class="n">append</span><span class="p">(</span>
+                        <span class="n">Particle</span><span class="p">(</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="p">,</span>
+                            <span class="s2">&quot;particle&quot;</span><span class="p">,</span>
+                            <span class="bp">self</span><span class="o">.</span><span class="n">rect</span><span class="p">()</span><span class="o">.</span><span class="n">center</span><span class="p">,</span>
+                            <span class="n">velocity</span><span class="o">=</span><span class="n">velocity</span><span class="p">,</span>
+                            <span class="n">frame</span><span class="o">=</span><span class="n">random</span><span class="o">.</span><span class="n">randint</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">6</span><span class="p">),</span>
+                        <span class="p">)</span>
+                    <span class="p">)</span></div>
+
+                    <span class="c1"># Or any other logic you use to handle player death</span>
+
+<div class="viewcode-block" id="Player.jump">
+<a class="viewcode-back" href="../entities.html#entities.Player.jump">[docs]</a>
+    <span class="k">def</span> <span class="nf">jump</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initiates the player&#39;s jump, affecting velocity and potentially</span>
+<span class="sd">        enabling wall jumps or double jumps.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Funkce pro provedení skoku hráče</span>
+        <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">wall_slide</span><span class="p">:</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&lt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="mf">3.5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+            <span class="k">elif</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span> <span class="ow">and</span> <span class="bp">self</span><span class="o">.</span><span class="n">last_movement</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">3.5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mf">2.5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">=</span> <span class="mi">5</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">=</span> <span class="nb">max</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span>
+                <span class="k">return</span> <span class="kc">True</span>
+
+        <span class="k">elif</span> <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">velocity</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">=</span> <span class="o">-</span><span class="mi">3</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">jumps</span> <span class="o">-=</span> <span class="mi">1</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">air_time</span> <span class="o">=</span> <span class="mi">5</span>
+            <span class="k">return</span> <span class="kc">True</span></div>
+
+
+<div class="viewcode-block" id="Player.dash">
+<a class="viewcode-back" href="../entities.html#entities.Player.dash">[docs]</a>
+    <span class="k">def</span> <span class="nf">dash</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initiates the player&#39;s dash action, providing a burst of speed and</span>
+<span class="sd">        potentially passing through obstacles.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Funkce pro provedení útoku (dash) hráče</span>
+        <span class="k">if</span> <span class="ow">not</span> <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span><span class="p">:</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">game</span><span class="o">.</span><span class="n">sfx</span><span class="p">[</span><span class="s2">&quot;dash&quot;</span><span class="p">]</span><span class="o">.</span><span class="n">play</span><span class="p">()</span>
+            <span class="k">if</span> <span class="bp">self</span><span class="o">.</span><span class="n">flip</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">=</span> <span class="o">-</span><span class="mi">70</span>
+            <span class="k">else</span><span class="p">:</span>
+                <span class="bp">self</span><span class="o">.</span><span class="n">dashing</span> <span class="o">=</span> <span class="mi">70</span></div>
+
+
+<div class="viewcode-block" id="Player.rect">
+<a class="viewcode-back" href="../entities.html#entities.Player.rect">[docs]</a>
+    <span class="k">def</span> <span class="nf">rect</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Overrides the base method to provide a rectangle representing the</span>
+<span class="sd">        player&#39;s bounds for collision detection.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            pygame.Rect: The rectangle representing the player&#39;s bounds.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Funkce pro získání obdélníkového objektu hráče pro kolizní detekci</span>
+        <span class="k">return</span> <span class="n">pygame</span><span class="o">.</span><span class="n">Rect</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="bp">self</span><span class="o">.</span><span class="n">size</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span>
+        <span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

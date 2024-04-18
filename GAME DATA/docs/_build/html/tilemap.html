@@ -1,0 +1,325 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>tilemap module &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="_static/jquery.js?v=5d32c60e"></script>
+        <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="_static/doctools.js?v=9a2dae69"></script>
+        <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="next" title="utils module" href="utils.html" />
+    <link rel="prev" title="particle module" href="particle.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="reference internal" href="modules.html">scripts</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="clouds.html">clouds module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="entities.html">entities module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="game.html">game module</a></li>
+<li class="toctree-l2"><a class="reference internal" href="particle.html">particle module</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">tilemap module</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#tilemap.Tilemap"><code class="docutils literal notranslate"><span class="pre">Tilemap</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.game"><code class="docutils literal notranslate"><span class="pre">Tilemap.game</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.tile_size"><code class="docutils literal notranslate"><span class="pre">Tilemap.tile_size</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.tilemap"><code class="docutils literal notranslate"><span class="pre">Tilemap.tilemap</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.offgrid_tiles"><code class="docutils literal notranslate"><span class="pre">Tilemap.offgrid_tiles</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.extract"><code class="docutils literal notranslate"><span class="pre">Tilemap.extract()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.load"><code class="docutils literal notranslate"><span class="pre">Tilemap.load()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.physics_rects_around"><code class="docutils literal notranslate"><span class="pre">Tilemap.physics_rects_around()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.render"><code class="docutils literal notranslate"><span class="pre">Tilemap.render()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.save"><code class="docutils literal notranslate"><span class="pre">Tilemap.save()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.solid_check"><code class="docutils literal notranslate"><span class="pre">Tilemap.solid_check()</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#tilemap.Tilemap.tiles_around"><code class="docutils literal notranslate"><span class="pre">Tilemap.tiles_around()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="utils.html">utils module</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="modules.html">scripts</a></li>
+      <li class="breadcrumb-item active">tilemap module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/tilemap.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-tilemap">
+<span id="tilemap-module"></span><h1>tilemap module<a class="headerlink" href="#module-tilemap" title="Link to this heading"></a></h1>
+<p>This module handles the creation, management, and rendering of tilemaps for
+the game. It provides functionalities
+for loading and saving tilemaps from files, accessing and modifying the tiles</p>
+<blockquote>
+<div><p>within the map, and rendering the</p>
+</div></blockquote>
+<p>tilemap to the screen. It also includes utilities for tile-based collision
+detection and automatic tile variant
+selection based on neighboring tiles to create more visually cohesive maps.</p>
+<dl class="py class">
+<dt class="sig sig-object py" id="tilemap.Tilemap">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">tilemap.</span></span><span class="sig-name descname"><span class="pre">Tilemap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">game</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">tile_size</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">16</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">object</span></code></p>
+<p>Manages a grid of tiles for the game world, including loading, saving,
+rendering, and collision detection.</p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tilemap.Tilemap.game">
+<span class="sig-name descname"><span class="pre">game</span></span><a class="headerlink" href="#tilemap.Tilemap.game" title="Link to this definition"></a></dt>
+<dd><p>The main game object, providing access to global</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p><a class="reference internal" href="game.html#game.Game" title="game.Game">Game</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">resources</span> <span class="pre">and</span> <span class="pre">settings.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tilemap.Tilemap.tile_size">
+<span class="sig-name descname"><span class="pre">tile_size</span></span><a class="headerlink" href="#tilemap.Tilemap.tile_size" title="Link to this definition"></a></dt>
+<dd><p>The size of each tile in pixels.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tilemap.Tilemap.tilemap">
+<span class="sig-name descname"><span class="pre">tilemap</span></span><a class="headerlink" href="#tilemap.Tilemap.tilemap" title="Link to this definition"></a></dt>
+<dd><p>A dictionary representing the grid of tiles, with</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>dict</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">keys</span> <span class="pre">as</span> <span class="pre">string</span> <span class="pre">coordinates</span> <span class="pre">&quot;x;y&quot;.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="tilemap.Tilemap.offgrid_tiles">
+<span class="sig-name descname"><span class="pre">offgrid_tiles</span></span><a class="headerlink" href="#tilemap.Tilemap.offgrid_tiles" title="Link to this definition"></a></dt>
+<dd><p>A list of tiles that do not align to the grid,</p>
+<dl class="field-list simple">
+<dt class="field-odd">Type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py">
+<span class="sig-name descname"><span class="pre">used</span> <span class="pre">for</span> <span class="pre">decorative</span> <span class="pre">elements.</span></span></dt>
+<dd></dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.extract">
+<span class="sig-name descname"><span class="pre">extract</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">id_pairs</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">keep</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.extract"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.extract" title="Link to this definition"></a></dt>
+<dd><p>Extracts tiles from the map matching specific id and variant pairs.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>id_pairs</strong> (<em>list</em><em> of </em><em>tuple</em>) – A list of tuples (type, variant)</p></li>
+<li><p><strong>against.</strong> (<em>to match tiles</em>)</p></li>
+<li><p><strong>keep</strong> (<em>bool</em><em>, </em><em>optional</em>) – Whether to keep the matched tiles in the</p></li>
+<li><p><strong>False.</strong> (<em>map. Defaults to</em>)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of matched tiles with their properties.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.load">
+<span class="sig-name descname"><span class="pre">load</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.load"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.load" title="Link to this definition"></a></dt>
+<dd><p>Loads a tilemap from a file, replacing the current state.</p>
+<p>Parameters:
+path (str): The file path to load the tilemap from.</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.physics_rects_around">
+<span class="sig-name descname"><span class="pre">physics_rects_around</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.physics_rects_around"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.physics_rects_around" title="Link to this definition"></a></dt>
+<dd><p>Gets a list of pygame.Rect objects for solid tiles around a
+specified position, for physics calculations.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>tuple</em>) – The position to check around, in pixels.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of pygame.Rect objects for solid tiles around
+the specified position.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.render">
+<span class="sig-name descname"><span class="pre">render</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">surf</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">offset</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">(0,</span> <span class="pre">0)</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.render"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.render" title="Link to this definition"></a></dt>
+<dd><p>Renders the tilemap onto a given surface.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>surf</strong> (<em>pygame.Surface</em>) – The surface to render the tilemap on.</p></li>
+<li><p><strong>offset</strong> (<em>tuple</em>) – An (x, y) offset to apply to the tile positions,</p></li>
+<li><p><strong>movement.</strong> (<em>used for camera</em>)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.save">
+<span class="sig-name descname"><span class="pre">save</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">path</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.save"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.save" title="Link to this definition"></a></dt>
+<dd><p>Saves the current state of the tilemap to a file.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>path</strong> (<em>str</em>) – The file path to save the tilemap to.</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.solid_check">
+<span class="sig-name descname"><span class="pre">solid_check</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.solid_check"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.solid_check" title="Link to this definition"></a></dt>
+<dd><p>Checks if a given position collides with a solid tile.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>tuple</em>) – The position to check, in pixels.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p><dl class="simple">
+<dt>True if there is a collision with a solid tile, False</dt><dd><p>otherwise.</p>
+</dd>
+</dl>
+</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="tilemap.Tilemap.tiles_around">
+<span class="sig-name descname"><span class="pre">tiles_around</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">pos</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/tilemap.html#Tilemap.tiles_around"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#tilemap.Tilemap.tiles_around" title="Link to this definition"></a></dt>
+<dd><p>Gets a list of tiles surrounding a specific position.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>pos</strong> (<em>tuple</em>) – The position to check around, in pixels.</p>
+</dd>
+<dt class="field-even">Returns<span class="colon">:</span></dt>
+<dd class="field-even"><p>A list of tiles around the specified position.</p>
+</dd>
+<dt class="field-odd">Return type<span class="colon">:</span></dt>
+<dd class="field-odd"><p>list</p>
+</dd>
+</dl>
+</dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="particle.html" class="btn btn-neutral float-left" title="particle module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="utils.html" class="btn btn-neutral float-right" title="utils module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

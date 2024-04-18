@@ -1,0 +1,262 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>clouds &mdash; JUMPY 00.00.01 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=80d5e7a1" />
+      <link rel="stylesheet" type="text/css" href="../_static/css/theme.css?v=19f00094" />
+
+  
+  <!--[if lt IE 9]>
+    <script src="../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script src="../_static/jquery.js?v=5d32c60e"></script>
+        <script src="../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+        <script src="../_static/documentation_options.js?v=d7bb8d4d"></script>
+        <script src="../_static/doctools.js?v=9a2dae69"></script>
+        <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../genindex.html" />
+    <link rel="search" title="Search" href="../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../index.html" class="icon icon-home">
+            JUMPY
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../modules.html">scripts</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../index.html">JUMPY</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="index.html">Module code</a></li>
+      <li class="breadcrumb-item active">clouds</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for clouds</h1><div class="highlight"><pre>
+<span></span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">This module is designed to handle cloud entities within the game environment.</span>
+
+<span class="sd">It provides functionality to create, update, and render clouds, adding to the </span>
+<span class="sd">visual aesthetics of the game&#39;s backgrounds or skies.</span>
+
+<span class="sd">Cloud entities are created with varying speeds and depths to simulate realistic</span>
+<span class="sd">movement and parallax effects.</span>
+<span class="sd">&quot;&quot;&quot;</span>
+
+<span class="kn">import</span> <span class="nn">random</span>
+
+
+<div class="viewcode-block" id="Cloud">
+<a class="viewcode-back" href="../clouds.html#clouds.Cloud">[docs]</a>
+<span class="k">class</span> <span class="nc">Cloud</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Represents an individual cloud in the game with its own position, image,</span>
+<span class="sd">    speed, and depth.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        pos (list of float): The x and y position of the cloud in the game</span>
+<span class="sd">        world.</span>
+
+<span class="sd">        img (pygame.Surface): The image representing the cloud.</span>
+
+<span class="sd">        speed (float): The speed at which the cloud moves, simulating wind.</span>
+
+<span class="sd">        depth (float): The depth of the cloud, used to calculate parallax</span>
+<span class="sd">        effects and simulate distance.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">pos</span><span class="p">,</span> <span class="n">img</span><span class="p">,</span> <span class="n">speed</span><span class="p">,</span> <span class="n">depth</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new Cloud instance with the specified attributes.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            pos (list of float): The initial position of the cloud.</span>
+
+<span class="sd">            img (pygame.Surface): The image representing the cloud.</span>
+<span class="sd">            speed (float): The cloud&#39;s movement speed.</span>
+
+<span class="sd">            depth (float): The cloud&#39;s depth relative to other entities in the</span>
+<span class="sd">              game world.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="n">pos</span><span class="p">)</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">img</span> <span class="o">=</span> <span class="n">img</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">speed</span> <span class="o">=</span> <span class="n">speed</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">depth</span> <span class="o">=</span> <span class="n">depth</span>
+
+<div class="viewcode-block" id="Cloud.update">
+<a class="viewcode-back" href="../clouds.html#clouds.Cloud.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates the cloud&#39;s position based on its speed.</span>
+
+<span class="sd">        This method should be called once per frame to move the cloud across</span>
+<span class="sd">        the game environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">+=</span> <span class="bp">self</span><span class="o">.</span><span class="n">speed</span></div>
+
+
+<div class="viewcode-block" id="Cloud.render">
+<a class="viewcode-back" href="../clouds.html#clouds.Cloud.render">[docs]</a>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders the cloud to a specified surface, adjusting its position based on the provided offset</span>
+<span class="sd">        and its depth to create a parallax effect.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">            surf (pygame.Surface): The Pygame surface to draw the cloud on.</span>
+<span class="sd">            offset (tuple of float): An (x, y) offset to apply to the cloud&#39;s position, used for</span>
+<span class="sd">            camera movement or scrolling environments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+
+
+        <span class="n">render_pos</span> <span class="o">=</span> <span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">-</span> <span class="n">offset</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">*</span> <span class="bp">self</span><span class="o">.</span><span class="n">depth</span><span class="p">,</span>
+        <span class="p">)</span>
+        <span class="n">surf</span><span class="o">.</span><span class="n">blit</span><span class="p">(</span>
+            <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="p">,</span>
+            <span class="p">(</span>
+                <span class="n">render_pos</span><span class="p">[</span><span class="mi">0</span><span class="p">]</span> <span class="o">%</span> <span class="p">(</span><span class="n">surf</span><span class="o">.</span><span class="n">get_width</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">get_width</span><span class="p">())</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">get_width</span><span class="p">(),</span>
+                <span class="n">render_pos</span><span class="p">[</span><span class="mi">1</span><span class="p">]</span> <span class="o">%</span> <span class="p">(</span><span class="n">surf</span><span class="o">.</span><span class="n">get_height</span><span class="p">()</span> <span class="o">+</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">get_height</span><span class="p">())</span>
+                <span class="o">-</span> <span class="bp">self</span><span class="o">.</span><span class="n">img</span><span class="o">.</span><span class="n">get_height</span><span class="p">(),</span>
+            <span class="p">),</span>
+        <span class="p">)</span></div>
+</div>
+
+
+
+<div class="viewcode-block" id="Clouds">
+<a class="viewcode-back" href="../clouds.html#clouds.Clouds">[docs]</a>
+<span class="k">class</span> <span class="nc">Clouds</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">    Manages a collection of Cloud instances, providing methods to update</span>
+<span class="sd">    and render all clouds as a group.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">    clouds (list of Cloud): A list of Cloud objects representing</span>
+<span class="sd">    individual clouds in the game environment.</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span> <span class="fm">__init__</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">cloud_pngs</span><span class="p">,</span> <span class="n">count</span><span class="o">=</span><span class="mi">16</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Initializes a new Clouds instance, creating a specified number</span>
+<span class="sd">        of Cloud objects with random attributes.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        cloud_pngs (list of pygame.Surface): </span>
+<span class="sd">        A list of images that can be used to represent the clouds.</span>
+<span class="sd">        count (int, optional): The number of cloud instances to create.</span>
+
+<span class="sd">        Defaults to 16.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span> <span class="o">=</span> <span class="p">[</span>
+            <span class="n">Cloud</span><span class="p">(</span>
+                <span class="p">(</span><span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">99999</span><span class="p">,</span> <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mi">99999</span><span class="p">),</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">choice</span><span class="p">(</span><span class="n">cloud_pngs</span><span class="p">),</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.05</span> <span class="o">+</span> <span class="mf">0.05</span><span class="p">,</span>
+                <span class="n">random</span><span class="o">.</span><span class="n">random</span><span class="p">()</span> <span class="o">*</span> <span class="mf">0.6</span> <span class="o">+</span> <span class="mf">0.2</span><span class="p">,</span>
+            <span class="p">)</span>
+            <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">count</span><span class="p">)</span>
+        <span class="p">]</span>
+        <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="o">.</span><span class="n">sort</span><span class="p">(</span><span class="n">key</span><span class="o">=</span><span class="k">lambda</span> <span class="n">cloud</span><span class="p">:</span> <span class="n">cloud</span><span class="o">.</span><span class="n">depth</span><span class="p">)</span>
+
+<div class="viewcode-block" id="Clouds.update">
+<a class="viewcode-back" href="../clouds.html#clouds.Clouds.update">[docs]</a>
+    <span class="k">def</span> <span class="nf">update</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Updates all cloud instances, moving them based on their</span>
+<span class="sd">        individual speeds.</span>
+
+<span class="sd">        This method should be called once per frame to animate the clouds</span>
+<span class="sd">        across the game environment.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cloud</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="p">:</span>
+            <span class="n">cloud</span><span class="o">.</span><span class="n">update</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Clouds.render">
+<a class="viewcode-back" href="../clouds.html#clouds.Clouds.render">[docs]</a>
+    <span class="k">def</span> <span class="nf">render</span><span class="p">(</span><span class="bp">self</span><span class="p">,</span> <span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">)):</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;</span>
+<span class="sd">        Renders all cloud instances to a specified surface, applying a</span>
+<span class="sd">        global offset to each cloud</span>
+<span class="sd">        and adjusting for parallax effects based on cloud depth.</span>
+
+<span class="sd">        Parameters:</span>
+<span class="sd">        surf (pygame.Surface): The Pygame surface to draw the clouds on.</span>
+<span class="sd">        offset (tuple of float): A global (x, y) offset to apply to</span>
+<span class="sd">        all clouds, used for camera movement or scrolling environments.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">for</span> <span class="n">cloud</span> <span class="ow">in</span> <span class="bp">self</span><span class="o">.</span><span class="n">clouds</span><span class="p">:</span>
+            <span class="n">cloud</span><span class="o">.</span><span class="n">render</span><span class="p">(</span><span class="n">surf</span><span class="p">,</span> <span class="n">offset</span><span class="o">=</span><span class="n">offset</span><span class="p">)</span></div>
+</div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Vašek Dlabač.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
